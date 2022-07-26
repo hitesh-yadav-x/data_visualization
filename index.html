@@ -105,6 +105,8 @@
                 .attr('id', 'heatGroup')
                 .attr('transform', 'translate(20,20)');
 
+            console.log(heatGroup.node().getBoundingClientRect().height);
+
             // Create the color scale for gradient.
             const colorScale = get_linear_scale(
                 [0, d3.max(all_total) / 2, d3.max(all_total)],
@@ -223,14 +225,13 @@
             // Append legend group
             // Below code is adopted from Nadieh Bremer's Block in gradient scale.
             legendGroup = svg.append('g')
-                .attr('id', 'legeldGroup')
+                .attr('id', 'legendGroup')
                 .attr('transform',
-                    `translate(${gridSize}, 
-                        ${Math.ceil(heatGroup.node().getBoundingClientRect().height + gridSize)})`);
+                    `translate(${gridSize}, 331)`);
 
             // Legend description
             legendGroup.append('text')
-                .attr('x', (heatGroup.node().getBoundingClientRect().width - gridSize) / 2 - (gridSize * 3.9))
+                .attr('x', 308)
                 .attr('y', 50)
                 .text('Total hourly traffic crashes by day for the year')
                 .attr('class', 'legendText')
@@ -273,7 +274,7 @@
 
             // Create legend marker
             var legendMarker = legendGroup.append('rect')
-                .attr('x', (Math.ceil(heatGroup.node().getBoundingClientRect().width) - gridSize) / 2 - (gridSize * 5))
+                .attr('x', 266)
                 .attr('y', 60)
                 .attr('height', 10)
                 .attr('width', () => {
