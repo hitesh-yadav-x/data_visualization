@@ -80,7 +80,7 @@
 </head>
 
 <body>
-    <div id="crash_heat" class="container"></div>
+    <div id="chart_container" class="container"></div>
     <div id="filter" class="container"></div>
     <script>
 
@@ -90,13 +90,13 @@
             height = gridSize * 9 + 80;
 
 
-        var year_index = 0;
+        var year_index = 1;
         var all_total = [];
 
         const draw = (nestedByDay, year_index, redraw) => {
 
             //Append SVG
-            var svg = d3.select('#crash_heat')
+            var svg = d3.select('#chart_container')
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height)
@@ -105,7 +105,6 @@
                 .attr('id', 'heatGroup')
                 .attr('transform', 'translate(20,20)');
 
-            console.log(heatGroup.node().getBoundingClientRect().height);
 
             // Create the color scale for gradient.
             const colorScale = get_linear_scale(
@@ -278,8 +277,8 @@
                 .attr('y', 60)
                 .attr('height', 10)
                 .attr('width', () => {
-                    if(redraw) { return gridSize * 12;}
-                    else { return 0;}
+                    if (redraw) { return gridSize * 12; }
+                    else { return 0; }
                 })
                 .style('fill', 'url("#legend-traffic")')
                 .transition()
@@ -388,15 +387,17 @@
                     })
                     index += 1;
                     all_total.push(total); // This is a small hack to get the max total for color scale domain.
-                    return { 'index': index, 
-                                'total': total,
-                                'fatal': fatal,
-                                'n_incap': n_incap,
-                                'n_injury': n_injury,
-                                'refused_ems': refused_ems,
-                                'rptd_nt_evid': rptd_nt_evid,
-                                'incapacit_injury': incapacit_injury,
-                                'none': none};
+                    return {
+                        'index': index,
+                        'total': total,
+                        'fatal': fatal,
+                        'n_incap': n_incap,
+                        'n_injury': n_injury,
+                        'refused_ems': refused_ems,
+                        'rptd_nt_evid': rptd_nt_evid,
+                        'incapacit_injury': incapacit_injury,
+                        'none': none
+                    };
 
                 })
                 .entries(data);
