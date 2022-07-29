@@ -106,6 +106,9 @@
         .unHighlight {
             opacity: 0.2;
         }
+        .legendRect {
+            cursor: default;
+        }
     </style>
 </head>
 
@@ -155,10 +158,10 @@
 
 
             //Create the color scale for gradient.
-            const colorScale = get_linear_scale(
-                [0, 6],
-                ["#F44336", "#9C27B0", "#FF5722", "#8E24AA", "#039BE5", "#00ACC1", "#795548"]
-            );
+            // const colorScale = get_linear_scale(
+            //     [0, 6],
+            //     ["#F44336", "#9C27B0", "#FF5722", "#8E24AA", "#039BE5", "#00ACC1", "#795548"]
+            // );
 
             var colourSet = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -236,7 +239,7 @@
                             .transition()
                             .ease(d3.easeLinear)
                             .attr("stroke-dashoffset", 0)
-                            .duration(2500);
+                            .duration(1500);
 
 
                     })
@@ -331,7 +334,21 @@
                     }
                 }).on('click', (day, i) => {
                     dispatch.call('toggle', this, day);
+                });
+
+                lineGroup.selectAll('days')
+                .data(days)
+                .enter()
+                .append('rect')
+                .attr('class', 'legendRect')
+                .attr('id', day => `${day}_color`)
+                .attr('x', lineGroupWidth - 70)
+                .attr('y', (d, i) => {
+                    return (38 + (i + 1) * 20)
                 })
+                .attr('width', 15)
+                .attr('height', 15)
+                .attr('fill', (d,i) => colourSet(i));
 
         }
 
