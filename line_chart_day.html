@@ -216,13 +216,30 @@
                         }
                     });
 
-                    lineGroup.select(`#lineGroup_${d.key}`)
+                    var all_paths = lineGroup.select(`#lineGroup_${d.key}`)
                         .append('path')
                         .attr('id', `linePath_${d.key}`)
                         .attr('d', line(line_data))
                         .attr('class', 'line')
                         .attr('fill', 'none')
                         .attr('stroke', colourSet(i));
+
+                    // Path animation
+                    // Reference - https://observablehq.com/@onoratod/animate-a-path-in-d3
+                    all_paths.each(d => {
+                        var path = d3.select(`#linePath_${d.key}`);
+
+                        const length = path.node().getTotalLength();
+
+                        path.attr("stroke-dasharray", length + " " + length)
+                            .attr("stroke-dashoffset", length)
+                            .transition()
+                            .ease(d3.easeLinear)
+                            .attr("stroke-dashoffset", 0)
+                            .duration(2500);
+
+
+                    })
 
                     lineGroup.select(`#lineGroup_${d.key}`).selectAll('circle')
                         .data(line_data)
@@ -237,7 +254,7 @@
                         .attr('opacity', 0)
                         .on('mouseenter', (node, i) => {
                             divToolTip.style("opacity", 1).style('z-index', 10);
-                            
+
 
                             divToolTip.html(`<b>Hour of the day: ${i}</b>
                                         <br/>Total crashes: ${node.total.toLocaleString('en')}
@@ -256,7 +273,8 @@
 
                         })
                         .on('mouseout', node => divToolTip.style('opacity', 0).style('left', null).style('top', null).style('z-index', -1)).classed('tooltip', false);
-                })
+                });
+
 
 
             // Append Filter
