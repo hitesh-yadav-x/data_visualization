@@ -14,6 +14,7 @@
     <script src="script/bar_daily.js" charset="utf-8"></script>
     <script src="script/bar_daily_by_hour.js" charset="utf-8"></script>
     <script src="script/heat_map.js" charset="utf-8"></script>
+    <script src="script/line_per_hour.js" charset="utf-8"></script>
 
     <!-- Include CSS -->
     <link rel="stylesheet" href="css/page_layout.css">
@@ -66,15 +67,20 @@
 
         var year_index = 1;
         var hour_index = 0;
+        var day_index = -1;
         var all_total = [];
         var all_total_bar_hourly = [];
         var all_total_heat = [];
+        var all_total_line = [];
         var chartIndex = 1;
         const years = ['2022', '2021', '2020', '2019', '2018'];
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
         var margin = { top: 20, right: 20, bottom: 30, left: 50 },
             barGroupWidth = width - margin.left - margin.right,
-            barGroupHeight = height - margin.top - margin.bottom;
+            barGroupHeight = height - margin.top - margin.bottom,
+            lineGroupWidth = width - margin.left - margin.right,
+            lineGroupHeight = height - margin.top - margin.bottom;
 
         var gridSize = Math.floor((barGroupWidth - 75) / 24);
 
@@ -106,6 +112,12 @@
                 d3.select('#chart_container').select('svg').remove();
                 d3.selectAll('#tooltip').remove();
                 dataHeatMap.then(d => drawHeatMap(d, year_index, false));
+            }
+            else if (chartIndex == 3){
+                chartIndex = chartIndex + 1;
+                d3.select('#chart_container').select('svg').remove();
+                d3.selectAll('#tooltip').remove();
+                dataLine.then(d => drawLine(d, year_index, false));
             }
         }
 

@@ -115,3 +115,19 @@ div.tooltip {
     font-size: 14px;
     cursor: default;
 }
+
+.line {
+    stroke-width: 2px;
+    fill: none;
+}
+
+.unHighlight {
+    opacity: 0.2;
+}
+.legendRect {
+    cursor: default;
+}
+
+.circle {
+    cursor: pointer;
+}
