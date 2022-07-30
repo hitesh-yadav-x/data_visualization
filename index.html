@@ -76,9 +76,7 @@
             barGroupWidth = width - margin.left - margin.right,
             barGroupHeight = height - margin.top - margin.bottom;
 
-        var gridSize = Math.floor((barGroupWidth - 75) / 24),
-
-        chartTypeIndex = [0, 1, 2, 3];
+        var gridSize = Math.floor((barGroupWidth - 75) / 24);
 
         const navigatorSVG = d3.select('.clicker')
             .append('svg')
