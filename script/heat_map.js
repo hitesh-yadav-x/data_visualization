@@ -131,11 +131,11 @@ const drawHeatMap = (nestedByDay, year_index, redraw) => {
     legendGroup = svg.append('g')
         .attr('id', 'legendGroup')
         .attr('transform',
-            `translate(${gridSize}, 220)`);
+            `translate(${gridSize}, 250)`);
 
     // Legend description
     legendGroup.append('text')
-        .attr('x', 180)
+        .attr('x', 200)
         .attr('y', 50)
         .text('Total hourly traffic crashes by day for the year')
         .attr('class', 'legendText')
