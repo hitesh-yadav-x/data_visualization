@@ -1,6 +1,7 @@
 body {
     margin-left: 40px;
     margin-right: 40px;
+    overflow: hidden;
 }
 
 h1 {
@@ -25,6 +26,8 @@ h1 {
 .description {
     grid-row-start: 2;
     grid-row-end: 3;
+    max-width: 1200px;
+    text-align: justify;
 }
 
 .main_chart {
@@ -96,8 +99,6 @@ div.tooltip {
 .annotationLine {
     stroke: gray;
     stroke-opacity: 0.8;
-    stroke-dasharray: 10 2;
-    stroke-width: 1px;
 }
 
 .annotationText {
@@ -133,9 +134,10 @@ div.tooltip {
 }
 
 p {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family: Andale Mono, monospace;
 }
 
 a {
-    text-decoration: none;
+    text-decoration: dotted;
+    color: steelblue;
 }
