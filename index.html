@@ -7,412 +7,102 @@
     <!-- Include d3.js version 5-->
     <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
 
-    <!-- Include get_data.js for data helper functions-->
+    <!-- Include the js files for chart code for data helper functions.-->
+    <!-- The idea is to modularize the code so that not everything is in the same page.-->
     <script src="script/get_data.js" charset="utf-8"></script>
     <script src="script/helper_functions.js" charset="utf-8"></script>
+    <script src="script/bar_daily.js" charset="utf-8"></script>
+    <script src="script/bar_daily_by_hour.js" charset="utf-8"></script>
+    <script src="script/heat_map.js" charset="utf-8"></script>
 
-    <!-- Include code script to draw the svg.-->
-    <!-- Reference: 
-        1: http://bl.ocks.org/nbremer/62cf60e116ae821c06602793d265eaf6 
-        2: https://www.visualcinnamon.com/2016/05/smooth-color-legend-d3-svg-gradient/
-        3: https://bl.ocks.org/EmbraceLife/739cf167627d7748730eef3663aaec89
-    -->
-    <!-- <script src="script/heat_map.js" charset="utf-8"></script> -->
-
+    <!-- Include CSS -->
+    <link rel="stylesheet" href="css/page_layout.css">
     <style>
-        .rowLabel,
-        .colLabel {
-            font-family: Andale Mono, monospace;
-            text-transform: uppercase;
-            font-weight: 300;
-            cursor: default;
-        }
-
-        .legendText {
-            font-family: Andale Mono, monospace;
-            font-weight: 100;
-            font-size: .8em;
-            cursor: default;
-        }
-
-        .legendAxis {
-            font-family: Andale Mono, monospace;
-        }
-
-        .gribBox {
-            cursor: pointer;
-        }
-
-        div.tooltip {
-            position: absolute;
-            width: 250px;
-            height: auto;
-            padding: 10px;
-            background-color: white;
-            padding-left: 10px;
-            font-family: Andale Mono, monospace;
-            font-size: small;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-            -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-            -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-            box-shadow: 4px 4px 10px rgba(0, 100, 100, 0.4);
-        }
-
-        .container {
-            float: left;
-        }
-
-        .filterTitle {
-            font-family: Andale Mono, monospace;
-            text-transform: uppercase;
-            font-size: 15Px;
-        }
-
-        .filterContent {
-            font-family: Andale Mono, monospace;
-            text-transform: uppercase;
-            font-size: 15Px;
-            cursor: pointer;
-        }
     </style>
 </head>
 
 <body>
-    <div id="chart_container" class="container"></div>
-    <div id="filter" class="container"></div>
+    <div class="container">
+        <div id="header_container_id" class="header_container">
+            <h1>What hours do Illinos cars crash the most?</h1>
+        </div>
+        <div class="description">
+            <p>The visualizations in this chart attempt to find the times when Illinois car crashes happen. Specifically
+                what hours do the crashes happen.
+                As a general understanding Illinois roads are busiest during the rush hours and coincidently we would
+                assume most of the crashes happen during this time.
+                Lets answer that using the crash data from <a href="https://data.cityofchicago.org/">Chicago Data
+                    Portal</a>
+                <br />
+                We will use the Traffic Crashes - People transportation data. Which can be downloaded using <a
+                    href="https://data.cityofchicago.org/Transportation/Traffic-Crashes-People/u6pd-qa9d">this link</a>.
+            </p>
+            <p>The crash data used for visualization starts from year 2018 and goes upto July 2022. I included 2022 yers
+                data to validate if the traffic crash trend is similar to past 4 years. The inital visualizations will
+                start with year 2021 with options to look at each of the years (2018 - partial 2022) to create a sens of
+                data and check if any patterns can be made out of the visualization.</p>
+
+        </div>
+        <div class="main_chart">
+            <div id="chart_container"></div>
+            
+        </div>
+        <!--<div id="filter"></div>-->
+        <div id="footer_container" class="footer">
+            <div class="clicker">
+            </div>
+        </div>
+    </div>
     <script>
-
         // SVG Container
-        var width = 1000,
-            gridSize = Math.floor((width - 80) / 24),
-            height = gridSize * 9 + 80;
-
+        var width = 960,
+            height = 400;
 
         var year_index = 1;
+        var hour_index = 0;
         var all_total = [];
+        var all_total_bar_hourly = [];
+        var all_total_heat = [];
+        var chartIndex = 1;
+        const years = ['2022', '2021', '2020', '2019', '2018'];
 
-        const draw = (nestedByDay, year_index, redraw) => {
+        var margin = { top: 20, right: 20, bottom: 30, left: 180 },
+            barGroupWidth = width - margin.left - margin.right,
+            barGroupHeight = height - margin.top - margin.bottom;
 
-            //Append SVG
-            var svg = d3.select('#chart_container')
-                .append('svg')
-                .attr('width', width)
-                .attr('height', height)
+        var gridSize = Math.floor((barGroupWidth - 75) / 24),
 
-            var heatGroup = svg.append('g')
-                .attr('id', 'heatGroup')
-                .attr('transform', 'translate(20,20)');
+        chartTypeIndex = [0, 1, 2, 3];
 
+        const navigatorSVG = d3.select('.clicker')
+            .append('svg')
+            .attr('width', 200)
+            .attr('height', 100);
 
-            // Create the color scale for gradient.
-            const colorScale = get_linear_scale(
-                [0, d3.max(all_total) / 2, d3.max(all_total)],
-                ["#FDEDEC", "#EC7063", "#78281F"]
-            );
-
-            // Append Row Lables
-            // Day names are used as row label
-            var rowLabels = heatGroup.selectAll('.rowLabel')
-                .data(nestedByDay)
-                .enter()
-                .append('text')
-                .attr('x', 0)
-                .attr('y', (d, i) => (i + 1) * gridSize)
-                .text(d => d.key)
-                .attr('transform', `translate(0, ${gridSize / 1.5})`)
-                .attr('class', 'rowLabel')
-                .attr('opacity', () => {
-                    if (redraw) { return 100; }
-                    else { return 0; }
-                })
-                .transition()
-                .duration(5000)
-                .attr('opacity', 100);
-
-            // Append column lables
-            var colLabels = heatGroup.selectAll('.colLabel')
-                .data(nestedByDay[0].values)
-                .enter()
-                .append('text')
-                .style("text-anchor", "middle")
-                .attr('x', (d, i) => i * gridSize + gridSize)
-                .attr('y', gridSize / 2 + 7)
-                .text(d => d.key)
-                .attr('transform', `translate(${gridSize / 2},0)`)
-                .attr('class', 'colLabel')
-                .attr('opacity', () => {
-                    if (redraw) { return 100; }
-                    else { return 0; }
-                })
-                .transition()
-                .duration(5000)
-                .attr('opacity', 100);
-
-            // Append heatMap
-            var heatMapGroups = heatGroup.selectAll('.crashGroup')
-                .data(nestedByDay)
-                .enter()
-                .append('g')
-                .attr('transform', (d, i) => {
-                    group_data_index = i;
-                    y = (i + 1) * gridSize
-                    return `translate(${gridSize},${y})`
-                })
-                .attr('id', (d, i) => `heatGroup_${i}`);
-
-            // Add tooltip
-            var divToolTip = d3.select('body')
-                .append('div')
-                .attr('class', 'tooltip')
-                .style('opacity', 0);
-
-            // Append data
-            heatMapGroups.each((group, i) => {
-                d3.select(`#heatGroup_${i}`)
-                    .selectAll('rect')
-                    .data(group.values)
-                    .enter()
-                    .append('rect')
-                    .attr('id', (node, j) => `heatGroup_${i}_${j}`)
-                    .attr('x', (node, j) => j * gridSize)
-                    .attr('y', 0)
-                    .attr('class', 'gribBox')
-                    .attr('height', node => {
-                        if (redraw) {
-                            return gridSize
-                        }
-                        else {
-                            return 0
-                        }
-                    })
-                    .attr('width', gridSize)
-                    .style("stroke", "white")
-                    .style("stroke-opacity", 0.5)
-                    .attr('fill', (node, j) => {
-                        return colorScale(node.values[year_index].value['total']);
-                    })
-                    .on('mouseenter', (node, i) => {
-                        divToolTip.style("opacity", 1).style('z-index', 10);
-
-                        divToolTip.html(`<b>Year: ${node.values[year_index].key}</b>
-                                        <br/>Total crashes: ${node.values[year_index].value['total'].toLocaleString('en')}
-                                        <hr/>
-                                        Injuries breakdown:<br/>
-                                        &nbsp;Fatal: ${node.values[year_index].value['fatal'].toLocaleString('en')}<br/>
-                                        &nbsp;Incapacitating injury: ${node.values[year_index].value['incapacit_injury'].toLocaleString('en')}<br/>
-                                        &nbsp;Non incapacitating: ${node.values[year_index].value['n_incap'].toLocaleString('en')}<br/>
-                                        &nbsp;No indication of injury: ${node.values[year_index].value['n_injury'].toLocaleString('en')}<br/>
-                                        &nbsp;Refused EMS: ${node.values[year_index].value['refused_ems'].toLocaleString('en')}<br/>
-                                        &nbsp;Reported, not evident: ${node.values[year_index].value['rptd_nt_evid'].toLocaleString('en')}<br/>
-                                        &nbsp;None: ${node.values[year_index].value['none'].toLocaleString('en')}`)
-                            .style("left", (d3.event.pageX) + "px")
-                            .style("top", (d3.event.pageY + 28) + "px");
-
-                    })
-                    .on('mouseout', node => divToolTip.style('opacity', 0).style('left', 1000).style('top', 1000).style('z-index', -1))
-                    .transition()
-                    .duration(1500)
-                    .delay((node, j) => j * 75)
-                    .ease(d3.easeElasticOut)
-                    .attr('height', gridSize);
-
-            });
-
-            // Legend
-            // Append legend group
-            // Below code is adopted from Nadieh Bremer's Block in gradient scale.
-            legendGroup = svg.append('g')
-                .attr('id', 'legendGroup')
-                .attr('transform',
-                    `translate(${gridSize}, 331)`);
-
-            // Legend description
-            legendGroup.append('text')
-                .attr('x', 308)
-                .attr('y', 50)
-                .text('Total hourly traffic crashes by day for the year')
-                .attr('class', 'legendText')
-                .attr('opacity', () => {
-                    if (redraw) { return 100; }
-                    else { return 0; }
-                })
-                .transition()
-                .delay(2000)
-                .duration(10000)
-                .attr('opacity', 100);
-
-            // Legend scale
-            var countScale = get_linear_scale([0, d3.max(all_total)], [0, width]);
-
-            // Calculate 
-            var numStops = 10;
-            countRange = countScale.domain();
-            countRange[2] = countRange[1] - countRange[0];
-            countPoint = [];
-            for (var i = 0; i < numStops; i++) {
-                countPoint.push(i * countRange[2] / (numStops - 1) + countRange[0]);
-            }
-
-            // Gradient definitions
-            svg.append("defs")
-                .append("linearGradient")
-                .attr("id", "legend-traffic")
-                .attr("x1", "0%").attr("y1", "0%")
-                .attr("x2", "100%").attr("y2", "0%")
-                .selectAll("stop")
-                .data(d3.range(numStops))
-                .enter().append("stop")
-                .attr("offset", function (d, i) {
-                    return countScale(countPoint[i]) / width;
-                })
-                .attr("stop-color", function (d, i) {
-                    return colorScale(countPoint[i]);
-                });
-
-            // Create legend marker
-            var legendMarker = legendGroup.append('rect')
-                .attr('x', 266)
-                .attr('y', 60)
-                .attr('height', 10)
-                .attr('width', () => {
-                    if (redraw) { return gridSize * 12; }
-                    else { return 0; }
-                })
-                .style('fill', 'url("#legend-traffic")')
-                .transition()
-                .delay(2000)
-                .duration(1500)
-                .attr('width', gridSize * 12);
-
-            var legendScale = d3.scaleLinear()
-                .domain([0, d3.max(all_total)])
-                .range([0, gridSize * 12]);
-
-            var legendAxis = d3.axisBottom()
-                .ticks(5)
-                .tickSize(0)
-                .scale(legendScale);
-
-            // Append legend scale
-            svg.append('g')
-                .attr('class', 'legendAxis')
-                .attr('stroke-width', 0)
-                .attr('transform',
-                    `translate(${legendMarker.node().getBoundingClientRect().x - 7}, 
-                    ${legendMarker.node().getBoundingClientRect().y + 5})`)
-                .call(legendAxis)
-                .attr('opacity', () => {
-                    if (redraw) { return 100; }
-                    else { return 0; }
-                })
-                .transition()
-                .delay(2000)
-                .duration(10000)
-                .attr('opacity', 100);
-
-            // Append Filter
-            var filterSvg = d3.select('#filter')
-                .append('svg')
-                .attr('width', 200)
-                .attr('height', 250)
-                .append('g')
-                .attr('transform', 'translate(0, 76)');
-
-
-            filterSvg.append('text')
-                .text('Year')
-                .attr('class', 'filterTitle')
-
-            filterSvg.selectAll('year')
-                .data(nestedByDay[0].values[0].values)
-                .enter()
-                .append('text')
-                .attr('id', d => d.value['index'])
-                .attr('x', 0)
-                .attr('y', (d, i) => (i + 1) * 20)
-                .attr('class', 'filterContent')
-                .text(d => d.key)
-                .attr('fill', d => {
-                    if (d.value['index'] == year_index) {
-                        return '#B03A2E'
-                    }
-                    else {
-                        return 'black';
-                    }
-                })
-                .on('click', d => {
-                    update(d.value['index'])
-                });
-        }
-
-        const data = get_csv_data("data/illinois_crash_ymd.csv").then(data => {
-
-
-            // Nest the data for heat map grid by
-            // NESTING_KEYS
-            //  1: DAY_OF_WEEK
-            //  2: HOUR_OF_DAY
-            //  3: YEAR
-            // ROLL_UP
-            //  1:
-            var index = -1;
-
-            // Create a nested array for the crash data.
-            return d3.nest()
-                .key(d => d.CRASH_DAY)
-                .key(d => d.CRASH_HOUR)
-                .key(d => d.CRASH_YEAR)
-                .rollup(d => {
-                    var total = 0;
-                    var fatal = 0
-                    var n_incap = 0;
-                    var n_injury = 0;
-                    var refused_ems = 0;
-                    var rptd_nt_evid = 0;
-                    var incapacit_injury = 0;
-                    var none = 0;
-
-                    d.forEach(node => {
-                        fatal = fatal + +node.FATAL;
-                        n_incap = +node.NONINCAPACITATING_INJURY;
-                        n_injury = +node.NO_INDICATION_OF_INJURY;
-                        refused_ems = +node.REFUSED_EMS;
-                        rptd_nt_evid = +node.REPORTED_NOT_EVIDENT;
-                        incapacit_injury = +node.INCAPACITATING_INJURY;
-                        none = node.NONE;
-
-                        total = total + +node.FATAL + +node.NONE + +node.NONINCAPACITATING_INJURY + +node.NO_INDICATION_OF_INJURY + +node.REFUSED_EMS + +node.REPORTED_NOT_EVIDENT + +node.INCAPACITATING_INJURY
-                    })
-                    index += 1;
-                    all_total.push(total); // This is a small hack to get the max total for color scale domain.
-                    return {
-                        'index': index,
-                        'total': total,
-                        'fatal': fatal,
-                        'n_incap': n_incap,
-                        'n_injury': n_injury,
-                        'refused_ems': refused_ems,
-                        'rptd_nt_evid': rptd_nt_evid,
-                        'incapacit_injury': incapacit_injury,
-                        'none': none
-                    };
-
-                })
-                .entries(data);
-
-
-
-        });
+        const navButton = navigatorSVG.append('text')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('transform', 'translate(50, 50)')
+            .text('Next>>')
+            .attr('id', 0)
+            .on('click', () => updateChart(chartIndex));
 
         // Draw initial chart
-        data.then(d => draw(d, year_index, false));
+        dataBarDaily.then(d => drawBar(d, year_index));
 
-        const update = (year_index) => {
-            d3.selectAll('svg').remove();
-            d3.selectAll('.tooltip').remove()
-            data.then(d => draw(d, year_index, true));
+        const updateChart = () => {
+            if (chartIndex == 1) {
+                chartIndex = chartIndex + 1;
+                d3.select('#chart_container').select('svg').remove();
+                d3.selectAll('#tooltip').remove();
+                dataBarHourly.then(d => drawBarHourly(d[year_index], year_index, hour_index));
+            }
+            else if (chartIndex == 2){
+                chartIndex = chartIndex + 1;
+                d3.select('#chart_container').select('svg').remove();
+                d3.selectAll('#tooltip').remove();
+                dataHeatMap.then(d => drawHeatMap(d, year_index, false));
+            }
         }
 
     </script>

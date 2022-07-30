@@ -118,11 +118,7 @@
             barGroupWidth = width - margin.left - margin.right,
             barGroupHeight = height - margin.top - margin.bottom;
 
-
-        
-
-
-        const drawBar = (nestedData, year_index, hour_index) => {
+        const drawBarHourly = (nestedData, year_index, hour_index) => {
 
 
 
@@ -328,7 +324,7 @@
 
 
 
-        const data = get_csv_data("data/illinois_crash_ymd.csv").then(data => {
+        const dataBarHourly = get_csv_data("data/illinois_crash_ymd.csv").then(data => {
 
 
             // Nest the data for heat map grid by
@@ -386,13 +382,13 @@
         });
 
         // Draw initial chart
-        data.then(d => drawBar(d[year_index], year_index, hour_index));
+        dataBarHourly.then(d => drawBarHourly(d[year_index], year_index, hour_index));
 
         //Update Chart
         const update = (year_index, hour_index) => {
             d3.selectAll('svg').remove();
             d3.selectAll('#tooltip').remove()
-            data.then(d => drawBar(d[year_index], year_index, hour_index));
+            data.then(d => drawBarHourly(d[year_index], year_index, hour_index));
         }
 
 
