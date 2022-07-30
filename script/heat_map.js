@@ -131,12 +131,11 @@ const drawHeatMap = (nestedByDay, year_index, redraw) => {
     legendGroup = svg.append('g')
         .attr('id', 'legendGroup')
         .attr('transform',
-            `translate(${gridSize}, 250)`);
+            `translate(265, 320)`);
 
     // Legend description
     legendGroup.append('text')
-        .attr('x', 200)
-        .attr('y', 50)
+        .attr('x', 14)
         .text('Total hourly traffic crashes by day for the year')
         .attr('class', 'legendText')
         .attr('opacity', () => {
@@ -178,8 +177,8 @@ const drawHeatMap = (nestedByDay, year_index, redraw) => {
 
     // Create legend marker
     var legendMarker = legendGroup.append('rect')
-        .attr('x', 200)
-        .attr('y', 60)
+        .attr('x', 0)
+        .attr('y', 10)
         .attr('height', 10)
         .attr('width', () => {
             if (redraw) { return gridSize * 12; }
@@ -204,7 +203,7 @@ const drawHeatMap = (nestedByDay, year_index, redraw) => {
     legendGroup.append('g')
         .attr('class', 'legendAxis')
         .attr('stroke-width', 0)
-        .attr('transform', `translate(200, 70)`)
+        .attr('transform', `translate(2, 20)`)
         .call(legendAxis)
         .attr('opacity', () => {
             if (redraw) { return 100; }
