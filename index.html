@@ -17,6 +17,12 @@
 
     <!-- Include CSS -->
     <link rel="stylesheet" href="css/page_layout.css">
+
+    <!-- Code Reference: 
+        1: http://bl.ocks.org/nbremer/62cf60e116ae821c06602793d265eaf6 
+        2: https://www.visualcinnamon.com/2016/05/smooth-color-legend-d3-svg-gradient/
+        3: https://bl.ocks.org/EmbraceLife/739cf167627d7748730eef3663aaec89
+    -->
     <style>
     </style>
 </head>
@@ -66,7 +72,7 @@
         var chartIndex = 1;
         const years = ['2022', '2021', '2020', '2019', '2018'];
 
-        var margin = { top: 20, right: 20, bottom: 30, left: 180 },
+        var margin = { top: 20, right: 20, bottom: 30, left: 150 },
             barGroupWidth = width - margin.left - margin.right,
             barGroupHeight = height - margin.top - margin.bottom;
 
