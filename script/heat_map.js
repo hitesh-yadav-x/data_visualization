@@ -123,6 +123,24 @@ const drawHeatMap = (nestedByDay, year_index, redraw) => {
             .ease(d3.easeElasticOut)
             .attr('height', gridSize);
 
+        //Annotate the rectangles
+        d3.select(`#heatGroup_${i}`)
+            .selectAll('circle')
+            .data(group.values)
+            .enter()
+            .append('circle')
+            .attr('cx', (node, j) => j * gridSize + (gridSize - 5))
+            .attr('cy', gridSize -5)
+            .attr('r', 2)
+            .attr('fill', (node, j) => {
+                if (node.values[year_index].value['total'] > 1000) {
+                    return 'gray'
+                }
+                else {
+                    return 'none'
+                }
+            });
+
     });
 
     // Legend
