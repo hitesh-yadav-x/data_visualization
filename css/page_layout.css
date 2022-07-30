@@ -131,3 +131,11 @@ div.tooltip {
 .circle {
     cursor: pointer;
 }
+
+p {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+a {
+    text-decoration: none;
+}

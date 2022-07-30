@@ -23,6 +23,8 @@
         1: http://bl.ocks.org/nbremer/62cf60e116ae821c06602793d265eaf6 
         2: https://www.visualcinnamon.com/2016/05/smooth-color-legend-d3-svg-gradient/
         3: https://bl.ocks.org/EmbraceLife/739cf167627d7748730eef3663aaec89
+        4: https://observablehq.com/@onoratod/animate-a-path-in-d3
+        5: https://stackoverflow.com/questions/24704450/d3-js-click-equivalent-of-mouseout
     -->
     <style>
     </style>
@@ -31,28 +33,12 @@
 <body>
     <div class="container">
         <div id="header_container_id" class="header_container">
-            <h1>What hours do Illinos cars crash the most?</h1>
+            <h2>Do most of the car crashes happen only during rush hour?</h2>
         </div>
         <div class="description">
-            <p>The visualizations in this chart attempt to find the times when Illinois car crashes happen. Specifically
-                what hours do the crashes happen.
-                As a general understanding Illinois roads are busiest during the rush hours and coincidently we would
-                assume most of the crashes happen during this time.
-                Lets answer that using the crash data from <a href="https://data.cityofchicago.org/">Chicago Data
-                    Portal</a>
-                <br />
-                We will use the Traffic Crashes - People transportation data. Which can be downloaded using <a
-                    href="https://data.cityofchicago.org/Transportation/Traffic-Crashes-People/u6pd-qa9d">this link</a>.
-            </p>
-            <p>The crash data used for visualization starts from year 2018 and goes upto July 2022. I included 2022 yers
-                data to validate if the traffic crash trend is similar to past 4 years. The inital visualizations will
-                start with year 2021 with options to look at each of the years (2018 - partial 2022) to create a sens of
-                data and check if any patterns can be made out of the visualization.</p>
-
         </div>
         <div class="main_chart">
             <div id="chart_container"></div>
-            
         </div>
         <!--<div id="filter"></div>-->
         <div id="footer_container" class="footer">
@@ -76,7 +62,7 @@
         const years = ['2022', '2021', '2020', '2019', '2018'];
         const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-        var margin = { top: 20, right: 20, bottom: 30, left: 50 },
+        var margin = { top: 20, right: 20, bottom: 30, left: 80 },
             barGroupWidth = width - margin.left - margin.right,
             barGroupHeight = height - margin.top - margin.bottom,
             lineGroupWidth = width - margin.left - margin.right,
@@ -107,19 +93,22 @@
                 d3.selectAll('#tooltip').remove();
                 dataBarHourly.then(d => drawBarHourly(d[year_index], year_index, hour_index));
             }
-            else if (chartIndex == 2){
+            else if (chartIndex == 2) {
                 chartIndex = chartIndex + 1;
                 d3.select('#chart_container').select('svg').remove();
                 d3.selectAll('#tooltip').remove();
                 dataHeatMap.then(d => drawHeatMap(d, year_index, false));
             }
-            else if (chartIndex == 3){
+            else if (chartIndex == 3) {
                 chartIndex = chartIndex + 1;
                 d3.select('#chart_container').select('svg').remove();
                 d3.selectAll('#tooltip').remove();
                 dataLine.then(d => drawLine(d, year_index, false));
             }
         }
+
+        // Initio Load HTML.
+        d3.select(".description").html(initialDescription);
 
     </script>
 </body>

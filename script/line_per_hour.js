@@ -20,15 +20,8 @@ const drawLine = (nestedData, year_index) => {
         }
     });
 
-
-
-    //Create the color scale for gradient.
-    // const colorScale = get_linear_scale(
-    //     [0, 6],
-    //     ["#F44336", "#9C27B0", "#FF5722", "#8E24AA", "#039BE5", "#00ACC1", "#795548"]
-    // );
-
-    var colourSet = d3.scaleOrdinal(d3.schemeCategory10);
+    //Create ordinal color scale
+    var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
     //Create Scales for X and Y coordinates
     var xScale = d3.scalePoint().domain(d3.range(24)).range([0, lineGroupWidth - 200]);
@@ -90,7 +83,7 @@ const drawLine = (nestedData, year_index) => {
                 .attr('d', line(line_data))
                 .attr('class', 'line')
                 .attr('fill', 'none')
-                .attr('stroke', colourSet(i));
+                .attr('stroke', colorScale(i));
 
             // Path animation
             // Reference - https://observablehq.com/@onoratod/animate-a-path-in-d3
@@ -118,7 +111,7 @@ const drawLine = (nestedData, year_index) => {
                 .attr('r', 5)
                 .attr('cx', node => xScale(node.index))
                 .attr('cy', node => yScale(node.total))
-                .attr('fill', colourSet(i))
+                .attr('fill', colorScale(i))
                 .attr('opacity', 0)
                 .on('mouseenter', (node, i) => {
                     divToolTip.style("opacity", 1).style('z-index', 10);
@@ -213,7 +206,7 @@ const drawLine = (nestedData, year_index) => {
         })
         .attr('width', 15)
         .attr('height', 15)
-        .attr('fill', (d,i) => colourSet(i));
+        .attr('fill', (d,i) => colorScale(i));
 
 }
 
