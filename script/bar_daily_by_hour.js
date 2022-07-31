@@ -178,19 +178,27 @@ const drawBarHourly = (nestedData, year_index, hour_index) => {
         .attr('x2', barGroupWidth - 200);
 
     barGroup.append('text')
-        .attr('x', 30)
-        .attr('y', yScale(average_crashes / 7) - 5)
-        .text('Average traffic crash')
-        .attr('class', 'annotationText');
+        .attr('x', barGroupWidth - 198)
+        .attr('id', 'avgAno')
+        .attr('y', yScale(average_crashes / 7) + 3)
+        .text('Avg')
+        .attr('class', 'annotationText')
+        .attr('opacity', 0)
+        .transition()
+        .delay(1000)
+        .duration(2100)
+        .attr('opacity', 1);
 
 
-    barGroup.append('rect')
-        .attr('x', 5)
-        .attr('y', barGroupHeight - 20)
-        .attr('width', barGroupWidth - 200)
-        .attr('height', 50)
-        .attr('fill', 'none')
-        .attr('class', 'annotationLine');
+    barGroup.append('line')
+        .attr('x1', xScale('Sat') + 50)
+        .attr('x2', xScale('Sat') + 50)
+        .attr('y1', barGroupHeight - 5)
+        .attr('y2', barGroupHeight - 5)
+        .attr('class', 'annotationLine')
+        .transition()
+        .duration(2000)
+        .attr('x2', xScale('Sat') + 100);
 
     barGroup.append('text')
         .attr('x', barGroupWidth - 190)

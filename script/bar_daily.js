@@ -151,15 +151,6 @@ const drawBar = (nestedData, year_index) => {
         .duration(2100)
         .attr('opacity', 1);
 
-
-    // barGroup.append('rect')
-    //     .attr('x', 5)
-    //     .attr('y', barGroupHeight - 20)
-    //     .attr('width', barGroupWidth - 200)
-    //     .attr('height', 50)
-    //     .attr('fill', 'none')
-    //     .attr('class', 'annotationLine');
-
     barGroup.append('line')
         .attr('x1', xScale('Sat') + 50)
         .attr('x2', xScale('Sat') + 50)

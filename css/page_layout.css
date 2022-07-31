@@ -147,4 +147,5 @@ a {
 .navButton {
     font-family: Andale Mono, monospace;
     cursor: pointer;
+    color: steelblue;
 }

@@ -103,11 +103,20 @@
                 d3.select(".description").html(heatDescription);
             }
             else if (chartIndex == 3) {
-                chartIndex = chartIndex + 1;
+                chartIndex = 0;
                 d3.select('#chart_container').select('svg').remove();
                 d3.selectAll('#tooltip').remove();
                 dataLine.then(d => drawLine(d, year_index, false));
                 d3.select(".description").html(lineDescription);
+                navButton.text('START OVER');
+            }
+            else {
+                chartIndex = chartIndex + 1;
+                d3.select('#chart_container').select('svg').remove();
+                d3.selectAll('#tooltip').remove();
+                dataBarDaily.then(d => drawBar(d, year_index));
+                d3.select(".description").html(initialDescription);
+                navButton.text('NEXT');
             }
         }
 
