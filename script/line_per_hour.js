@@ -184,7 +184,7 @@ const drawLine = (nestedData, year_index) => {
                     .attr('x', node => xScale(node.index) + 10)
                     .attr('y', node => yScale(node.total) - 80)
                     .attr('class', 'annotationText')
-                    .text('Higher traffic crashes Sunday midnight.')
+                    .text('Higher traffic crashes Saturday midnight.')
                     .call(wrap, 100)
                     .attr('opacity', 0)
                     .transition()
