@@ -166,7 +166,12 @@ const drawBar = (nestedData, year_index) => {
         .attr('y', barGroupHeight - 10)
         .text('Injury categories with low values have lighter shade. Hover over bars to see the category breakdown.')
         .attr('class', 'annotationText')
-        .call(wrap, 200);
+        .call(wrap, 200)
+        .attr('opacity', 0)
+        .transition()
+        .delay(1000)
+        .duration(2100)
+        .attr('opacity', 1);
 
 }
 

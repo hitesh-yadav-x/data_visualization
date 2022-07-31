@@ -134,6 +134,63 @@ const drawLine = (nestedData, year_index) => {
 
                 })
                 .on('mouseout', node => divToolTip.style('opacity', 0).style('left', null).style('top', null).style('z-index', -1)).classed('tooltip', false);
+
+            if (d.key == 'Sun') {
+                lineGroup.select(`#lineGroup_Sun`).selectAll('#annotationCircle')
+                    .data(line_data.filter((d, k) => k === 5))
+                    .enter()
+                    .append('line')
+                    .attr('x1', node => xScale(node.index) + 10)
+                    .attr('x2', node => xScale(node.index) + 10)
+                    .attr('y1', node => yScale(node.total) - 10)
+                    .attr('y2', node => yScale(node.total) - 10)
+                    .style('stroke', 'gray')
+                    .transition()
+                    .duration(1500)
+                    .attr('y2', node => yScale(node.total) - 200);
+
+                lineGroup.select(`#lineGroup_Sun`).selectAll('#annotationCircle')
+                    .data(line_data.filter((d, k) => k === 5))
+                    .enter()
+                    .append('text')
+                    .attr('x', node => xScale(node.index))
+                    .attr('y', node => yScale(node.total) - 220)
+                    .attr('class', 'annotationText')
+                    .text('All days have similar crash count between 5:00 - 6:00 A.M.')
+                    .call(wrap, 200)
+                    .attr('opacity', 0)
+                    .transition()
+                    .duration(1500)
+                    .attr('opacity', 0.7);
+
+                lineGroup.select(`#lineGroup_Sun`).selectAll('#annotationCircle')
+                    .data(line_data.filter((d, k) => k === 0))
+                    .enter()
+                    .append('line')
+                    .attr('x1', node => xScale(node.index))
+                    .attr('x2', node => xScale(node.index))
+                    .attr('y1', node => yScale(node.total))
+                    .attr('y2', node => yScale(node.total))
+                    .style('stroke', 'gray')
+                    .transition()
+                    .duration(1500)
+                    .attr('x2', node => xScale(node.index) + 50)
+                    .attr('y2', node => yScale(node.total) - 50);
+
+                lineGroup.select(`#lineGroup_Sun`).selectAll('#annotationCircle')
+                    .data(line_data.filter((d, k) => k === 0))
+                    .enter()
+                    .append('text')
+                    .attr('x', node => xScale(node.index) + 10)
+                    .attr('y', node => yScale(node.total) - 80)
+                    .attr('class', 'annotationText')
+                    .text('Higher traffic crashes Sunday midnight.')
+                    .call(wrap, 100)
+                    .attr('opacity', 0)
+                    .transition()
+                    .duration(1500)
+                    .attr('opacity', 0.7);
+            }
         });
 
 
@@ -194,7 +251,7 @@ const drawLine = (nestedData, year_index) => {
             dispatch.call('toggle', this, day);
         });
 
-        lineGroup.selectAll('days')
+    lineGroup.selectAll('days')
         .data(days)
         .enter()
         .append('rect')
@@ -206,7 +263,7 @@ const drawLine = (nestedData, year_index) => {
         })
         .attr('width', 15)
         .attr('height', 15)
-        .attr('fill', (d,i) => colorScale(i));
+        .attr('fill', (d, i) => colorScale(i));
 
 }
 
