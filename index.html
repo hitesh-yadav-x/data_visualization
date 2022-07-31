@@ -33,7 +33,7 @@
 <body>
     <div class="container">
         <div id="header_container_id" class="header_container">
-            <h2>Finding weekend's rush hour through Illinois's traffic crash data.</h2>
+            <h2>When does Illinois see most of the trafic crashes?</h2>
         </div>
         <div class="description">
         </div>
@@ -106,7 +106,7 @@
                 chartIndex = 0;
                 d3.select('#chart_container').select('svg').remove();
                 d3.selectAll('#tooltip').remove();
-                dataLine.then(d => drawLine(d, year_index, false));
+                dataLine.then(d => drawLine(d, year_index, true));
                 d3.select(".description").html(lineDescription);
                 navButton.text('START OVER');
             }

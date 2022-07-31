@@ -52,8 +52,8 @@ const wrap = (text, width) => {
 const initialDescription = `<p>Illinois witnesses it's fair share of car crashes everyday on the roads. 
                                 The crashes happen for multiple reasons and there are multiple factors that contribute towards the rising number.  
                                 As a general understanding Illinois roads are busiest during the rush hours and coincidently we see most of the crashes happen during rush hours. 
-                                Let's answer that using the crash data from <a href="https://data.cityofchicago.org/" target="_blank">Chicago DataPortal</a>.</p>
-                                <p>The data used is the Traffic Crashes - People transportation data. The data can be downloaded from <a href="https://data.cityofchicago.org/Transportation/Traffic-Crashes-People/u6pd-qa9d" target="_blank">here</a>.
+                                Let's answer that using the crash data from Chicago DataPortal.</p>
+                                <p>The data used is the Traffic Crashes - People transportation data.
                                 The crash data used for visualization starts from year 2018 and ends in the month of July 2022. Although the visualization primarily uses year 2021 data,
                                 each scene in the visualization contains year (and more) filter(s) for further exploration making all years accessible to all the scenes.</p>`;
 
@@ -65,4 +65,5 @@ const heatDescription =`<p>A heat map for every hour reveals a similar detail fr
 
 const lineDescription = `<p>The observation becomes more evident looking at the chart below. Sunday and Saturday crash numbers start higher during the midnight hours and drop by 5:00 A.M. This is evident in the data for all years. The crashes are higher during rush hours on weekdays.</p>
                             <p>The pattern becomes interesting for weekends. We see more crashes happening as the weekend hits and the crash counts remain relatively high during the night as compared to weekdays. Weekend has its own rush hour! Saturday midnight turns out has the highest traffic crashes.</p>
-                            <p>We can also see that weekdays follow a set pattern with all the day lines following simlar double top pattern.</p>`;
+                            <p>We can also see that weekdays follow a set pattern with all the day lines following simlar double top pattern.</p>
+                            <p>The data used in this visualization can be found at <a href="https://data.cityofchicago.org/" target="_blank">Chicago DataPortal</a> and downloaded from <a href="https://data.cityofchicago.org/Transportation/Traffic-Crashes-People/u6pd-qa9d" target="_blank">here</a></p>`;

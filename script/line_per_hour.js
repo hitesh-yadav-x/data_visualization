@@ -1,4 +1,4 @@
-const drawLine = (nestedData, year_index) => {
+const drawLine = (nestedData, year_index, redraw) => {
 
     //Append SVG
     const svg = d3.select('#chart_container')
@@ -92,14 +92,14 @@ const drawLine = (nestedData, year_index) => {
 
                 const length = path.node().getTotalLength();
 
-                path.attr("stroke-dasharray", length + " " + length)
-                    .attr("stroke-dashoffset", length)
-                    .transition()
-                    .ease(d3.easeLinear)
-                    .attr("stroke-dashoffset", 0)
-                    .duration(2500);
-
-
+                if (redraw) {
+                    path.attr("stroke-dasharray", length + " " + length)
+                        .attr("stroke-dashoffset", length)
+                        .transition()
+                        .ease(d3.easeLinear)
+                        .attr("stroke-dashoffset", 0)
+                        .duration(2500);
+                }
             })
 
             lineGroup.select(`#lineGroup_${d.key}`).selectAll('circle')
@@ -185,7 +185,7 @@ const drawLine = (nestedData, year_index) => {
                     .attr('y', node => yScale(node.total) - 80)
                     .attr('class', 'annotationText')
                     .text('Higher traffic crashes Saturday midnight.')
-                    .call(wrap, 100)
+                    .call(wrap, 120)
                     .attr('opacity', 0)
                     .transition()
                     .duration(1500)
@@ -327,7 +327,7 @@ const dataLine = get_csv_data("data/illinois_crash_ymd.csv").then(data => {
 const updateLine = (year_index) => {
     d3.select("#chart_container").select('svg').remove();
     d3.selectAll('#tooltip').remove()
-    dataLine.then(d => drawLine(d, year_index));
+    dataLine.then(d => drawLine(d, year_index, false));
 }
 
 //Create a dispatch function
