@@ -49,7 +49,7 @@
     <script>
         // SVG Container
         var width = 960,
-            height = 400;
+            height = 350;
 
         var year_index = 1;
         var hour_index = 0;
@@ -78,7 +78,7 @@
         const navButton = navigatorSVG.append('text')
             .attr('x', 0)
             .attr('y', 0)
-            .attr('transform', 'translate(50, 50)')
+            .attr('transform', 'translate(50, 40)')
             .text('Next>>')
             .attr('id', 0)
             .on('click', () => updateChart(chartIndex));
@@ -92,12 +92,14 @@
                 d3.select('#chart_container').select('svg').remove();
                 d3.selectAll('#tooltip').remove();
                 dataBarHourly.then(d => drawBarHourly(d[year_index], year_index, hour_index));
+                d3.select(".description").html(hourlyDescription);
             }
             else if (chartIndex == 2) {
                 chartIndex = chartIndex + 1;
                 d3.select('#chart_container').select('svg').remove();
                 d3.selectAll('#tooltip').remove();
                 dataHeatMap.then(d => drawHeatMap(d, year_index, false));
+                d3.select(".description").html(heatDescription);
             }
             else if (chartIndex == 3) {
                 chartIndex = chartIndex + 1;

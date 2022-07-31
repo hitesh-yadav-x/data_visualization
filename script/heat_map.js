@@ -135,7 +135,7 @@ const drawHeatMap = (nestedByDay, year_index, redraw) => {
 
     // Legend description
     legendGroup.append('text')
-        .attr('x', 14)
+        .attr('x', 10)
         .text('Total hourly traffic crashes by day for the year')
         .attr('class', 'legendText')
         .attr('opacity', () => {

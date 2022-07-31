@@ -163,7 +163,7 @@ const drawLine = (nestedData, year_index) => {
             }
         })
         .on('click', (d, i) => {
-            update(i)
+            updateLine(i)
         });
 
     // Apped Day filter
@@ -267,8 +267,8 @@ const dataLine = get_csv_data("data/illinois_crash_ymd.csv").then(data => {
 //dataLine.then(d => drawLine(d, year_index));
 
 //Update Chart
-const update = (year_index) => {
-    d3.selectAll('svg').remove();
+const updateLine = (year_index) => {
+    d3.select(".chart_container").select('svg').remove();
     d3.selectAll('#tooltip').remove()
     dataLine.then(d => drawLine(d, year_index));
 }

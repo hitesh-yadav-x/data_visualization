@@ -28,6 +28,7 @@ h1 {
     grid-row-end: 3;
     max-width: 1200px;
     text-align: justify;
+    min-height: 200px;
 }
 
 .main_chart {
@@ -99,6 +100,7 @@ div.tooltip {
 .annotationLine {
     stroke: gray;
     stroke-opacity: 0.8;
+    stroke-width: 1.5px;
 }
 
 .annotationText {

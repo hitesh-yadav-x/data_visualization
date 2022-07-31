@@ -52,7 +52,15 @@ const wrap = (text, width) => {
 const initialDescription = `<p>Illinois witnesses it's fair share of car crashes everyday on the roads. 
                                 The crashes happen for multiple reasons and there are multiple factors that contribute towards the rising number.  
                                 As a general understanding Illinois roads are busiest during the rush hours and coincidently we would assume most of the crashes happen during rush hours. 
-                                Lets answer that using the crash data from <a href="https://data.cityofchicago.org/" target="_blank">Chicago DataPortal</a>.</p>
+                                Let's answer that using the crash data from <a href="https://data.cityofchicago.org/" target="_blank">Chicago DataPortal</a>.</p>
                                 <p>The data used is the Traffic Crashes - People transportation data. The data can be downloaded from <a href="https://data.cityofchicago.org/Transportation/Traffic-Crashes-People/u6pd-qa9d" target="_blank">here</a>.
-                                The crash data used for visualization starts from year 2018 and ends in the month July 2022. Although the visualization primarily uses year 2021 data,
+                                The crash data used for visualization starts from year 2018 and ends in the month of July 2022. Although the visualization primarily uses year 2021 data,
                                 each scene in the visualization contains year (and more) filter(s) for further exploration making all years accessible to all the scenes.</p>`;
+
+const hourlyDescription = `<p>Visualizing the data hourly reveals that number of Sunday's and Saturday's are higher than the average crash per day. The total value remains higher from midnight to 5 A.M. As the day progresses the crash follows the usual 
+                                trend with higher numbers in weekdays. Total crashes follow an up trend path with peak number of crashes hapening on Friday's and Saturday's.
+                                <p>The data from the chart reveal that higher number of crashes do happen outside of the rush hour specially on weekends, with numbers going to more than 1000 crashes/hour at midnight.</p>`
+
+const heatDescription =`<p>Plotting a heat map for every hour reveals a similar detail from the previous scene. We can see that the hourly data for weekends from midnight to 5 A.M. have a darker gradient as the crash numbers rise.
+                             Use >1000 filter to highlight all the daily hours that have more than 1000 crashes.
+                             <p>Even though the crash number are higher during rush hour, we can clearly see a pattern where the cars crashed are in the higher range at night.</p>`
