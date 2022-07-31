@@ -64,5 +64,5 @@ const heatDescription =`<p>A heat map for every hour reveals a similar detail fr
                              <p>Even though the crash numbers are higher during the rush hour, we can clearly see a pattern where the cars crashing are in the higher range at night on weekends.</p>`
 
 const lineDescription = `<p>The observation becomes more evident looking at the chart below. Sunday and Saturday crash numbers start higher during the midnight hours and drop by 5:00 A.M. This is evident in the data for all years. The crashes are higher during rush hours on weekdays.</p>
-                            <p>The pattern becomes interesting for weekends. We see more crashes happening as the weekend hits and the crash counts remain relatively high during the night as compared to weekdays. Weekend has its own rush hour! Saturday midnight turns out to be totaling the hightest traffic crash for all the years.</p>
+                            <p>The pattern becomes interesting for weekends. We see more crashes happening as the weekend hits and the crash counts remain relatively high during the night as compared to weekdays. Weekend has its own rush hour! Saturday midnight turns out has the highest traffic crashes.</p>
                             <p>We can also see that weekdays follow a set pattern with all the day lines following simlar double top pattern.</p>`;
