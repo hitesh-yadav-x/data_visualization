@@ -143,3 +143,8 @@ a {
     text-decoration: dotted;
     color: steelblue;
 }
+
+.navButton {
+    font-family: Andale Mono, monospace;
+    cursor: pointer;
+}

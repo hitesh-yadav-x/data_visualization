@@ -78,8 +78,9 @@
         const navButton = navigatorSVG.append('text')
             .attr('x', 0)
             .attr('y', 0)
+            .attr('class', 'navButton')
             .attr('transform', 'translate(50, 40)')
-            .text('Next>>')
+            .text('NEXT')
             .attr('id', 0)
             .on('click', () => updateChart(chartIndex));
 
@@ -106,6 +107,7 @@
                 d3.select('#chart_container').select('svg').remove();
                 d3.selectAll('#tooltip').remove();
                 dataLine.then(d => drawLine(d, year_index, false));
+                d3.select(".description").html(lineDescription);
             }
         }
 
