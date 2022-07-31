@@ -163,7 +163,7 @@ const drawLine = (nestedData, year_index, redraw) => {
                     .duration(1500)
                     .attr('opacity', 0.7);
 
-                lineGroup.select(`#lineGroup_Sun`).selectAll('#annotationCircle')
+                lineGroup.select(`#lineGroup_Sun`).selectAll('#annotationLineFirst')
                     .data(line_data.filter((d, k) => k === 0))
                     .enter()
                     .append('line')
@@ -177,7 +177,7 @@ const drawLine = (nestedData, year_index, redraw) => {
                     .attr('x2', node => xScale(node.index) + 50)
                     .attr('y2', node => yScale(node.total) - 50);
 
-                lineGroup.select(`#lineGroup_Sun`).selectAll('#annotationCircle')
+                lineGroup.select(`#lineGroup_Sun`).selectAll('#annotationTextFirst')
                     .data(line_data.filter((d, k) => k === 0))
                     .enter()
                     .append('text')
